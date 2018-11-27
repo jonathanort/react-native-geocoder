@@ -1,7 +1,4 @@
-import { NativeModules } from 'react-native';
-import GoogleApi from './googleApi.js';
-
-const { RNGeocoder } = NativeModules;
+import GoogleApi from "./googleApi.js";
 
 export default {
   apiKey: null,
@@ -15,10 +12,10 @@ export default {
       return Promise.reject(new Error("invalid position: {lat, lng} required"));
     }
 
-    return RNGeocoder.geocodePosition(position).catch(err => {
-      if (!this.apiKey) { throw err; }
-      return GoogleApi.geocodePosition(this.apiKey, position);
-    });
+    if (!this.apiKey) {
+      throw err;
+    }
+    return GoogleApi.geocodePosition(this.apiKey, position);
   },
 
   geocodeAddress(address) {
@@ -26,9 +23,9 @@ export default {
       return Promise.reject(new Error("address is null"));
     }
 
-    return RNGeocoder.geocodeAddress(address).catch(err => {
-      if (!this.apiKey) { throw err; }
-      return GoogleApi.geocodeAddress(this.apiKey, address);
-    });
-  },
-}
+    if (!this.apiKey) {
+      throw err;
+    }
+    return GoogleApi.geocodeAddress(this.apiKey, address);
+  }
+};
